@@ -7,6 +7,7 @@ export function LoginScreen() {
   const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
 
+
   return (
     <View className="flex-1 items-center justify-center">
       <View className="w-full p-5 gap-5 items-center">
@@ -20,15 +21,17 @@ export function LoginScreen() {
           placeholder="Senha"
           secureTextEntry={true}
           onChangeText={(text) => {setSenha(text)}}
-          
+        
         />
 
         <ButtonCustomizado title="Entrar" onPress={() => console.log("login", login, "senha", senha)} />
-
-        <Text className="text-blue-400">
-          Esqueceu a Senha?
-        </Text>
-      </View>
+        <View className="flex-row gap-4">
+          <Text className="text-xl text-blue-400">Cadastra-se</Text>
+          <Text className="text-xl">|</Text>
+          <Text className="text-blue-400">
+          Esqueceu a Senha?</Text>
+    </View>
+    </View>
     </View>
   )
 }
