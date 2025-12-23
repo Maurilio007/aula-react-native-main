@@ -2,19 +2,36 @@ import { ButtonCustomizado } from "@/components/botaoCustomizado";
 import { InputCustomizado } from "@/components/inputCustomizado";
 import { useEffect, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
+import { getData, storeData } from "utils/storage";
 
 export function ListaNumeroScreen() {
   const [item, setItem] = useState("");
   const [lista, setLista] = useState<number[]>([]);
 
-  function adicionaItem() {
+
+  async function adicionarItem() {
     setLista([...lista, Number(item)]);
+
+    await storeData({key: "ListaNumero", value: JSON.stringify([...lista, Number(item)])});
     setItem("");
   }
 
-  function limpaLista() {
+  async function limpaLista() {
     setLista([]);
+
+    await storeData({key: "ListaNumero", value: JSON.stringify([])});
   }
+
+  async function carregarLista() {
+    const dados = await getData("ListaNumero") || [];
+    
+
+    setLista(dados);
+  }
+  useEffect(() => {
+        carregarLista();
+    }, []);
+
 
   return(
     <View className="flex-1 items-center gap-4 p-3">
@@ -28,7 +45,7 @@ export function ListaNumeroScreen() {
       />
       <ButtonCustomizado 
         title="Adicionar" 
-        onPress={adicionaItem}
+        onPress={adicionarItem}
       />
       <ButtonCustomizado 
         title="Limpar Lista" 
@@ -41,7 +58,7 @@ export function ListaNumeroScreen() {
             key={index} 
             className="text-2xl"
           >
-            {item} - {item % 2 === 0? "Par" : ""}
+            {item} - {item % 2 === 0? "Par" : "Impar"}
           </Text>
         ))}
       </ScrollView>
